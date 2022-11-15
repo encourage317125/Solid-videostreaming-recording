@@ -230,14 +230,8 @@ const RecordDashboard = () => {
                     min: 720,
                     ideal: 1080,
                     max: 1440,
-                },
-                height: {
-                    min: 720,
-                    ideal: 1080,
-                    max: 1440
-                },
+                }
             },
-            // video: false,
             audio: true,
             deviceId: {
                 exact: currentCamera()
@@ -317,7 +311,6 @@ const RecordDashboard = () => {
         const [chunk] = mediaChunks()
         const blobProperty: BlobPropertyBag = Object.assign(
             { type: chunk.type }, { type: "video/webm" }
-            // { type: chunk.type }, { type: "audio/webm" }
         )
         console.log(mediaChunks())
         const videoBlob = new Blob(mediaChunks(), blobProperty)
@@ -325,7 +318,7 @@ const RecordDashboard = () => {
         setRecords([...getRecords().filter(record => record.index !== getCurrentIndex()), { index: getCurrentIndex(), time: getElapsedTime(), data: videoBlob, status: 4, url: null, title: scripts[changeData()] }])
         // after recording video, move to next automatically 
         onNext()
-        // uploadS3Bucket(changeData(), videoBlob)
+        uploadS3Bucket(changeData(), videoBlob)
 
         // saveBlob(videoBlob, `myRecording.${videoBlob.type.split('/')[1].split(';')[0]}`);
     }
@@ -343,30 +336,10 @@ const RecordDashboard = () => {
             })
             let response = await res.json()
             if (response.code == 200) {
-                // callback and reload the main city
-                // notificationService.show({
-                //     status: "success", /* or success, warning, danger */
-                //     title: "Upload success!",
-                //     duration: 1500,
-                // });
                 compareWithScript(response.result?.url, parseInt(response.result?.transcript_id))
-            }
-            else {
-                // notificationService.show({
-                //     status: "danger", /* or success, warning, danger */
-                //     title: "Upload failed!",
-                //     description: "Please retry! 🤥",
-                //     duration: 1500,
-                // });
             }
         } catch (e) {
             console.error(e); // 30
-            // notificationService.show({
-            //     status: "danger", /* or success, warning, danger */
-            //     title: "Upload failed!",
-            //     description: "Please retry! 🤥",
-            //     duration: 1500,
-            // });
         }
     }
 
@@ -386,7 +359,6 @@ const RecordDashboard = () => {
             .then((response) => {
                 if (response.data.code == 200) {
                     // callback and reload the main city
-                    // setRecordStatus(status)
                     data.status = 2
                 }
                 else {
