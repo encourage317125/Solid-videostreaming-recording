@@ -74,6 +74,7 @@ const RecordDashboard = () => {
     }
 
     let recordingTimerId: number;
+    let recordingMTime: number;
 
     if (localStorage.getItem('color-theme')) {
         if (localStorage.getItem('color-theme') === 'dark') {
@@ -224,6 +225,7 @@ const RecordDashboard = () => {
     const startStream = async () => {
         const updatedConstraints = {
             video: {
+                
                 width: {
                     min: 720,
                     ideal: 1080,
@@ -284,6 +286,7 @@ const RecordDashboard = () => {
     }
 
     const onRecord = () => {
+        recordingMTime = 0;
         if (!getDeviceFound())
             return;
         setMediaChunks([])
@@ -292,15 +295,19 @@ const RecordDashboard = () => {
         setRecordStatus(1);
         setChangeData(getCurrentIndex())
         recordingTimerId = setInterval(() => {
-            setElapsedTime(getElapsedTime() + 1);
+            recordingMTime += 50
+            if (Math.floor(recordingMTime / 1000)){
+                setElapsedTime(getElapsedTime() + 1);
+                recordingMTime = 0
+            }
             if (changeData() !== getCurrentIndex()) {
                 clearInterval(recordingTimerId)
                 if (getMediaRecorder()?.state === 'recording') {
                     getMediaRecorder()?.stop()
                 }
             }
-        }, 1000);
-        getMediaRecorder()?.start(1000);
+        }, 50);
+        getMediaRecorder()?.start(0);
     }
 
     const onSave = () => {
@@ -312,12 +319,13 @@ const RecordDashboard = () => {
             { type: chunk.type }, { type: "video/webm" }
             // { type: chunk.type }, { type: "audio/webm" }
         )
+        console.log(mediaChunks())
         const videoBlob = new Blob(mediaChunks(), blobProperty)
 
         setRecords([...getRecords().filter(record => record.index !== getCurrentIndex()), { index: getCurrentIndex(), time: getElapsedTime(), data: videoBlob, status: 4, url: null, title: scripts[changeData()] }])
         // after recording video, move to next automatically 
         onNext()
-        uploadS3Bucket(changeData(), videoBlob)
+        // uploadS3Bucket(changeData(), videoBlob)
 
         // saveBlob(videoBlob, `myRecording.${videoBlob.type.split('/')[1].split(';')[0]}`);
     }
