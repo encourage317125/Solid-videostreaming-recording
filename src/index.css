@@ -14,20 +14,17 @@ div.record-view {
 body {
   font-family: 'Didot';
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .bg-dark {
-  background-color: rgba(51, 45, 45, 1) !important;
+  background-color: rgba(51, 45, 45, 0.8) !important;
 }
 
 #theme-toggle {
@@ -76,6 +73,7 @@ code {
 .record-section .record-pane {
   display: flex;
   bottom: 0px;
+  cursor: default;
 }
 
 .record-section .record-control {
@@ -91,13 +89,11 @@ code {
   cursor: pointer;
 }
 
-.record-section .record-control img,
-button {
+.record-section .record-control img, button {
   margin: 1rem 0rem;
 }
 
-.record-section .record-control img.disabled,
-button.disabled {
+.record-section .record-control img.disabled, button.disabled {
   border: none;
   background-image: none;
   opacity: .4;
@@ -178,8 +174,8 @@ button:hover {
   border-color: white;
   background-color: #007bff;
   cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: white;
   width: 300px;
 }
@@ -273,8 +269,7 @@ button:hover {
   cursor: pointer;
 }
 
-.page-link:first-child,
-.page-link:last-child {
+.page-link:first-child, .page-link:last-child {
   color: black;
   font-weight: 700;
 }
@@ -291,6 +286,7 @@ button:hover {
 
 .page-link:focus {
   z-index: 3;
+  cursor: pointer;
 }
 
 .page-link.active {
@@ -354,11 +350,6 @@ button:hover {
     width: 230px !important;
     margin-bottom: .5rem !important;
   }
-
-  /* #modal-video {
-    width: 500px;
-    height: 300px;
-  } */
 }
 
 @media (min-width: 1200px) {}
@@ -436,8 +427,7 @@ button:hover {
   margin: -2rem;
 }
 
-@keyframes smokeOut {
-  100% {
+@keyframes smokeOut { 100% {
     opacity: 0.08;
     filter: blur(5px);
     letter-spacing: 4px;
